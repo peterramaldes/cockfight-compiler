@@ -21,10 +21,14 @@ pub struct File {
     pub location: Location,
 }
 
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Location { 
+    /// The begin line locate the for the expression
     pub start: u16,
+
+    /// The end line locate the for the expression
     pub end: u16,
+
+    /// The filename where the expression are located
     pub filename: String,
 }

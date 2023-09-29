@@ -7,6 +7,7 @@ fn main() {
 }
 
 fn parse_json_into_file() -> Result<()> {
+    // TODO: create some validations on json, for instance: start with -1
     // TODO: read the file on `/var/rinha/source.rinha.json`
     let data = r#"
         {
