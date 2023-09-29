@@ -1,12 +1,17 @@
 mod model;
 
-use serde_json::Result;
+use std::result::Result;
+use std::io::Error;
 
 fn main() {
-    let _ = parse_json_into_file();
+    let f: model::File = parse_json_into_file().unwrap_or_else(|err| {
+        panic!("Error trying to parse the JSON file: {:?}", err)
+    });
+
+    println!("{:#?}", f);
 }
 
-fn parse_json_into_file() -> Result<()> {
+fn parse_json_into_file() -> Result<model::File, Error> {
     // TODO: create some validations on json, for instance: start with -1
     // TODO: read the file on `/var/rinha/source.rinha.json`
     let data = r#"
@@ -36,11 +41,8 @@ fn parse_json_into_file() -> Result<()> {
           }
         }"#;
 
-    let f: model::File = serde_json::from_str(data).unwrap_or_else(|err| {
-        panic!("Error trying to parse the JSON file: {:?}", err)
-    });
-
-    println!("{:#?}", f);
-
-    Ok(())
+    return match serde_json::from_str(data) {
+        Ok(file) => Ok(file),
+        Err(e) => Err(e.into()),
+    };
 }
