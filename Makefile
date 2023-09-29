@@ -1,12 +1,11 @@
-dev:
-	cargo run --release
-	./target/release/cfc
-
 build:
 	cargo build --release
 
 clean:
 	rm -rf ./target
+
+run: build
+	./target/release/cfc
 
 docker:
 	docker build -t peterramaldes/cfc .
