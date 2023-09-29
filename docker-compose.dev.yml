@@ -1,0 +1,13 @@
+version: "3.5"
+name: cfc
+services:
+  compiler:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: "0.2GB"
+
