@@ -1,17 +1,23 @@
 mod model;
 
-use std::result::Result;
+use crate::model::*;
 use std::io::Error;
+use std::process;
+use std::result::Result;
 
 fn main() {
-    let f: model::File = parse_json_into_file().unwrap_or_else(|err| {
-        panic!("Error trying to parse the JSON file: {:?}", err)
+    let file: model::File = parse_json_into_file().unwrap_or_else(|err| {
+        eprintln!("[ERROR] Trying to parse the json file: {err}");
+        process::exit(1);
     });
 
-    println!("{:#?}", f);
+    // print_type_of(&file.expression);
+    println!("{:#?}", file.expression);
+
+    file.expression.eval();
 }
 
-fn parse_json_into_file() -> Result<model::File, Error> {
+fn parse_json_into_file() -> Result<File, Error> {
     // TODO: create some validations on json, for instance: start with -1
     // TODO: read the file on `/var/rinha/source.rinha.json`
     let data = r#"

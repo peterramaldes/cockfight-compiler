@@ -13,20 +13,12 @@ pub struct File {
     pub location: Location,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(tag = "kind")]
-/// Expression represents which kind of structure the expression represents
-pub enum Expression {
-    Print { value: Box<Expression>, location: Location },
-    Str { value: String, location: Location },
-}
-
-trait Evaluator {
-    fn eval(&self) -> f64;
+pub trait Evaluator {
+    fn eval(&self);
 }
 
 impl Evaluator for Expression {
-    fn eval(&self) -> f64 {
+    fn eval(&self) {
         match self {
             Expression::Print { value: _, location: _ } => {
                 panic!("todo: implement print")
@@ -36,6 +28,15 @@ impl Evaluator for Expression {
             },
         }
     }
+}
+
+
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(tag = "kind")]
+/// Expression represents which kind of structure the expression represents
+pub enum Expression {
+    Print { value: Box<Expression>, location: Location },
+    Str { value: String, location: Location },
 }
 
 #[derive(Serialize, Deserialize, Debug)]
