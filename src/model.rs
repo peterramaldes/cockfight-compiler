@@ -27,6 +27,11 @@ pub enum Term {
     Str(Str),
 }
 
+#[derive(Debug)]
+pub struct Trap {
+    pub message: String,
+}
+
 #[derive(Clone, Debug)]
 pub enum Value {
     Str(String),

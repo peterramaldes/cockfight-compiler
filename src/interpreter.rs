@@ -1,9 +1,5 @@
 use crate::model::*;
 
-pub struct Trap {
-    pub message: String,
-}
-
 pub fn eval(term: Box<Term>) -> Result<Value, Trap> {
     match *term {
         Term::Print(print) => eval_print(print),
