@@ -1,3 +1,4 @@
+mod interpreter;
 mod model;
 
 use crate::model::*;
@@ -6,20 +7,21 @@ use std::process;
 use std::result::Result;
 
 fn main() {
-    let file: model::File = parse_json_into_file().unwrap_or_else(|err| {
+    // Parse the file and retrieve the structure
+    let file: model::File = parse_json().unwrap_or_else(|err| {
         eprintln!("[ERROR] Trying to parse the json file: {err}");
         process::exit(1);
     });
 
-    // print_type_of(&file.expression);
-    println!("{:#?}", file.expression);
-
-    file.expression.eval();
+    // TODO: execute the print thing
+    let entrypoint = Box::new(file.expression);
+    interpreter::eval(entrypoint);
 }
 
-fn parse_json_into_file() -> Result<File, Error> {
+fn parse_json() -> Result<File, Error> {
     // TODO: create some validations on json, for instance: start with -1
     // TODO: read the file on `/var/rinha/source.rinha.json`
+    // TODO: return somme pretty error if could happen something strange
     let data = r#"
         {
           "name": "print.rinha",
