@@ -1,12 +1,18 @@
-use crate::model::{self, Term};
+use crate::model::*;
 
-pub fn eval(term: Box<model::Term>) {
+pub struct Trap {
+    pub message: String,
+}
+
+pub fn eval(term: Box<Term>) -> Result<Value, Trap> {
     match *term {
         Term::Print(print) => eval_print(print),
+        Term::Str(val) => Ok(Value::Str(val.value)),
     }
 }
 
-// TODO: move this parameter to something more generic
-pub fn eval_print(print: model::Print) {
-    panic!("not impleted yet");
+pub fn eval_print(print: Print) -> Result<Value, Trap> {
+    let val = eval(print.value)?;
+    println!("{}", val);
+    Ok(val)
 }
