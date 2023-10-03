@@ -15,7 +15,7 @@ fn main() {
 
     // TODO: execute the print thing
     let entrypoint = Box::new(file.expression);
-    interpreter::eval(entrypoint);
+    let _ = interpreter::eval(entrypoint);
 }
 
 fn parse_json() -> Result<File, Error> {
