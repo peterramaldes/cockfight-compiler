@@ -32,6 +32,9 @@ pub enum Term {
     Print(Print),
     Str(Str),
     Let(Let),
+    Function(Function),
+    If(If),
+    Binary(Binary),
 }
 
 // TODO: We should refactor this Trap into something like: "Error", "RuntimeError"...
@@ -87,6 +90,64 @@ pub struct Let {
 }
 
 impl Element for Let {
+    fn location(&self) -> &Location {
+        &self.location
+    }
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Function {
+    pub parameters: Vec<Parameter>,
+    pub value: Box<Term>,
+    pub location: Location,
+}
+
+impl Element for Function {
+    fn location(&self) -> &Location {
+        &self.location
+    }
+}
+
+#[derive(Debug, Deserialize)]
+pub struct If {
+    pub condition: Box<Term>,
+    pub then: Box<Term>,
+    pub otherwise: Box<Term>,
+    pub location: Location,
+}
+
+impl Element for If {
+    fn location(&self) -> &Location {
+        &self.location
+    }
+}
+
+#[derive(Debug, Deserialize)]
+pub enum BinaryOp {
+    Add,
+    Sub,
+    Mul,
+    Div,
+    Rem,
+    Eq,
+    Neq,
+    Lt,
+    Gt,
+    Lte,
+    Gte,
+    And,
+    Or,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Binary {
+    pub lhs: Box<Term>,
+    pub op: BinaryOp,
+    pub rhs: Box<Term>,
+    pub location: Location,
+}
+
+impl Element for Binary {
     fn location(&self) -> &Location {
         &self.location
     }
