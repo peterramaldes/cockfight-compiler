@@ -7,7 +7,6 @@ use std::result::Result;
 fn main() -> Result<(), Trap> {
     let file = parse_json()?;
 
-    // TODO: execute the print thing
     let entrypoint = Box::new(file.expression);
     let _ = interpreter::eval(entrypoint);
 
@@ -18,7 +17,10 @@ fn parse_json() -> Result<File, Trap> {
     // TODO: create some validations on json, for instance: start with -1
     // TODO: return somme pretty error if could happen something strange
 
-    let path = "/var/rinha/source.rinha.json";
+    let path = std::env::args()
+        .nth(1)
+        .unwrap_or("/var/rinha/source.rinha.json".to_string());
+
     let file = std::fs::read_to_string(&path).expect(&format!("failed to read file at {}", &path));
 
     return match serde_json::from_str(&file) {
