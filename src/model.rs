@@ -20,13 +20,21 @@ pub struct Location {
     pub filename: String,
 }
 
+#[derive(Deserialize, Debug)]
+pub struct Parameter {
+    pub text: String,
+    pub location: Location,
+}
+
 #[derive(Debug, Deserialize)]
 #[serde(tag = "kind")]
 pub enum Term {
     Print(Print),
     Str(Str),
+    Let(Let),
 }
 
+// TODO: We should refactor this Trap into something like: "Error", "RuntimeError"...
 #[derive(Debug)]
 pub struct Trap {
     pub message: String,
@@ -65,6 +73,20 @@ pub struct Str {
 }
 
 impl Element for Str {
+    fn location(&self) -> &Location {
+        &self.location
+    }
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Let {
+    pub name: Parameter,
+    pub value: Box<Term>,
+    pub next: Box<Term>,
+    pub location: Location,
+}
+
+impl Element for Let {
     fn location(&self) -> &Location {
         &self.location
     }
